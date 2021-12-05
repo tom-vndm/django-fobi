@@ -2,6 +2,7 @@ import csv
 import logging
 
 from django.http import HttpResponse
+from django.db import NotSupportedError
 
 import json
 
@@ -60,7 +61,7 @@ class DataExporter(object):
             qs = [obj.form_data_headers for obj in qs]
 
         # Engines like SQLite
-        except NotImplementedError:
+        except NotSupportedError:
             qs = self.queryset.only(*only_args)
             qs = [obj.form_data_headers for obj in qs]
             qs = list(set(qs))
