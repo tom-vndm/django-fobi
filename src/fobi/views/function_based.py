@@ -2211,9 +2211,21 @@ def view_form_entry(request, form_entry_slug, theme=None, template_name=None):
                     form_entry.name
                 )
             )
-            return redirect(
-                reverse('fobi.form_entry_submitted', args=[form_entry.slug])
-            )
+            ##############################
+            ##############################
+            
+            filtered_handler_responses = [x for (y,x) in handler_responses if x is not None]
+            if len(filtered_handler_responses) == 0:
+                return redirect(reverse('fobi.form_entry_submitted', args=[form_entry.slug]))
+
+            else:
+                return filtered_handler_responses[-1]
+
+            ##############################
+            ##############################
+            #return redirect(
+            #    reverse('fobi.form_entry_submitted', args=[form_entry.slug])
+            #)
         else:
             # Fire post form validation callbacks
             fire_form_callbacks(form_entry=form_entry, request=request,
